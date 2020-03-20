@@ -12,7 +12,6 @@ import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -59,6 +58,8 @@ public class EditarVideo extends AppCompatActivity {
         // El videoView usa la Uri recibida por parametro
         videoView.setVideoURI( uri );
 
+        // Botón de guardar
+        final ImageView guardarBoton = findViewById(R.id.recortar);
         // Botón de play
         final ImageView playBoton = findViewById(R.id.playboton);
 
@@ -202,6 +203,14 @@ public class EditarVideo extends AppCompatActivity {
             }
         });
 
+        guardarBoton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // recortar y guardar video
+
+            }
+        });
     }
 
     // Convierte los milisegundos recibidos por parametro en un string con minutos y segundos
