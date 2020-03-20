@@ -4,16 +4,87 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
+
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="8">
 
-        <com.deep.videotrimmer.DeepVideoTrimmer
-            android:id="@+id/videorecorte"
+        <VideoView
+            android:id="@+id/videoeditor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+        <ImageView
+            android:id="@+id/recortar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="right"
+            android:src="@drawable/guardar"/>
+        <ImageView
+            android:id="@+id/playboton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:src="@drawable/play"/>
 
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tiempoinicio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="00:00"
+                android:textAlignment="center"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tiempoactual"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#f1f1f1"
+                android:text="00:00"
+                android:textAlignment="center"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tiempofin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="00:00"
+                android:textAlignment="center"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/marcaizquierda"
+            android:thumb="@drawable/thumbizquierdo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <SeekBar
+            android:id="@+id/marcaderecha"
+            android:thumb="@drawable/thumbderecho"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
 
 
 </LinearLayout>
