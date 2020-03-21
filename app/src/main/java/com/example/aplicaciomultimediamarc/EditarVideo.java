@@ -1,8 +1,6 @@
 package com.example.aplicaciomultimediamarc;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +26,7 @@ public class EditarVideo extends AppCompatActivity {
 
     public static final int RECORTE_MINIMO = 1000;
     private VideoView videoView;
+    private OnTrimVideoListener mOnTrimVideoListener;
     private CountDownTimer countDownTimer;
     private long tiempoExtra = 0;
 
@@ -49,7 +47,6 @@ public class EditarVideo extends AppCompatActivity {
     // Editor de video
     @SuppressLint("ClickableViewAccessibility")
     private void editarVideo(final VideoView videoView, final Uri uri, final String ruta) {
-
 
         // El videoView usa la Uri recibida por parametro
         videoView.setVideoURI( uri );
@@ -208,8 +205,11 @@ public class EditarVideo extends AppCompatActivity {
 
                     Toast.makeText(EditarVideo.this, "Exportant video...", Toast.LENGTH_LONG).show();
 
-                    MediaUtil.cortarVideo(ruta, getExternalFilesDir(null) + "newvideo", controlIzquierdo.getProgress(), controlDerecho.getProgress(),
-                            true, true);
+                    final File file = new File(ruta);
+
+                    TrimVideoUtils.startTrim(file, getExternalFilesDir(null).getAbsolutePath(),
+                            controlIzquierdo.getProgress(), controlDerecho.getProgress(), mOnTrimVideoListener );
+
                 } catch (IOException e) {
                     Toast.makeText(EditarVideo.this, "ERROR: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
