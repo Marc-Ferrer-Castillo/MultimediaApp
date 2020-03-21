@@ -30,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int BUSCAR_IMATGE = 0;
     private static final int BUSCAR_VIDEO = 1;
     private static final int BUSCAR_SO = 2;
+    /** Si edicio es true se abren actividades diferentes */
     private boolean edicio;
+    /** Si permisosConcedidos es false no se utilizar funciones de lectura/escritura */
     private boolean permisosConcedidos = false;
 
     @Override
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Views de los botones
         ImageView capturar = findViewById(R.id.capturar);
         ImageView galeria = findViewById(R.id.galeria);
         ImageView editar = findViewById(R.id.editar);
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         capturar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Abre la cámara si se encuntra hardware de cámara
                 if (hiHaCamara()) {
                     startActivity(new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA));
                 }
@@ -100,20 +104,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Seleccio del tipus d´arxiu multimedia
-    // Utilitza un intent diferent segons el tipus
+    /** Seleccio del tipus d´arxiu multimedia
+     *  Utilitza un intent diferent segons el tipus
+     *  @param contexto Contexto de la actividad*/
     public void seleccioTipus(Activity contexto) {
+
+        // Objeto para crear diálogos
         AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
+        // Posibles opciones de tipo de archivo a escoger
         String[] opciones = {"Imatge", "Video", "Audio"};
 
+        // Si se han concedido los permisos previamente
         if (permisosConcedidos){
+
+            // Crea diálogo preguntado por el tipo de fichero deseado
             builder.setTitle("Selecciona un tipus de fitxer").setItems(opciones, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int seleccio) {
+
+                    // Intent para la actividad a abrir
                     Intent intent = null;
 
+                    // Según el tipo de fichero seleccionado
                     switch (seleccio){
+
+                        // Seleccio d´imatge
                         case BUSCAR_IMATGE:
-                            // Seleccio d´imatge
                             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, BUSCAR_IMATGE);
                             break;
@@ -122,16 +137,18 @@ public class MainActivity extends AppCompatActivity {
                         case BUSCAR_SO:
                             // Custom File Picker
                             intent = new Intent(MainActivity.this, FilePickerActivity.class);
-                            // Configuracio
+
+                            // Configuración del filePicker
                             intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
                                     .setCheckPermission(true)
-                                    .setShowAudios(true)
+                                    .setShowAudios(true) // Solo muestra audio
                                     .setShowFiles(false)
                                     .setShowImages(false)
                                     .setShowVideos(false)
-                                    .setSingleChoiceMode(true)
+                                    .setSingleChoiceMode(true) // Solo 1 único archivo seleccionable
                                     .setSkipZeroSizeFiles(true)
                                     .build());
+
                             startActivityForResult(intent, BUSCAR_SO);
                             break;
 
@@ -139,12 +156,17 @@ public class MainActivity extends AppCompatActivity {
                         case BUSCAR_VIDEO:
                             // Custom File Picker
                             intent = new Intent(MainActivity.this, FilePickerActivity.class);
-                            // Configuracio
+                            // Configuración del filePicker
                             intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                                    .setShowAudios(false)
+                                    .setShowFiles(false)
+                                    .setShowImages(false)
+                                    .setShowVideos(true) // Solo muestra video
                                     .setCheckPermission(true)
-                                    .setSingleChoiceMode(true)
+                                    .setSingleChoiceMode(true) // Solo 1 único archivo seleccionable
                                     .setSkipZeroSizeFiles(true)
                                     .build());
+
                             startActivityForResult(intent, BUSCAR_VIDEO);
                             break;
                     }
