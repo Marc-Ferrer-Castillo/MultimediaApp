@@ -3,13 +3,13 @@
 Small App that works with multimedia. 
 Can trim Images, Video and Audio. Images can also be rotated and flipped horizontally/vertically
 
-School Activity [Centre d'estudis Politècnics](http://www.cepnet.net/)
+School Activity [Centre d'Estudis Politècnics](http://www.cepnet.net/)
 March 2020
 
 ## Authors
 * [Marc Ferrer Castillo](https://github.com/Marc-Ferrer-Castillo/)
 
-![Icon Image](https://raw.githubusercontent.com/Marc-Ferrer-Castillo/MultimediaApp/master/app/src/main/res/drawable/icon.png)
+![Icon Image](https://raw.githubusercontent.com/Marc-Ferrer-Castillo/MultimediaApp/master/icon.png)
 
 ## Built With
 
