@@ -14,13 +14,13 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
+import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int BUSCAR_VIDEO = 1;
     private static final int BUSCAR_SO = 2;
     private boolean edicio;
+    private boolean permisosConcedidos = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
             else {
-
+                permisosConcedidos = true;
             }
         }
         else {
-
+            permisosConcedidos = true;
         }
 
         // Click en capturar
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_PERMISSIONS_CODE) {
             // permisos concedidos
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // proceder
+                permisosConcedidos = true;
             }
             else {
                 Toast.makeText(MainActivity.this, "Permissos denegats", Toast.LENGTH_LONG).show();
@@ -106,28 +107,38 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
         String[] opciones = {"Imatge", "Video", "Audio"};
 
-        builder.setTitle("Selecciona un tipus de fitxer").setItems(opciones, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int seleccio) {
-                        Intent intent = null;
+        if (permisosConcedidos){
+            builder.setTitle("Selecciona un tipus de fitxer").setItems(opciones, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int seleccio) {
+                    Intent intent = null;
 
-                        switch (seleccio){
-                            case BUSCAR_IMATGE:
-                                // Seleccio d´imatge
-                                intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(intent, BUSCAR_IMATGE);
-                                break;
-                            case BUSCAR_VIDEO:
-                                intent = new Intent(MainActivity.this, FilePickerActivity.class);
-                                startActivityForResult(intent, BUSCAR_VIDEO);
-                                //intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                                break;
-                            case BUSCAR_SO:
-                                // Seleccio d´audio
-                                intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(intent, BUSCAR_SO);
-                                break;
-                        }
-                    }}).create().show();
+                    switch (seleccio){
+                        case BUSCAR_IMATGE:
+                            // Seleccio d´imatge
+                            intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, BUSCAR_IMATGE);
+                            break;
+                        case BUSCAR_VIDEO:
+                            // Custom File Picker
+                            intent = new Intent(MainActivity.this, FilePickerActivity.class);
+                            // Configuracio
+                            intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                                    .setCheckPermission(true)
+                                    .setShowImages(false)
+                                    .setSingleChoiceMode(true)
+                                    .setSkipZeroSizeFiles(true)
+                                    .build());
+                            startActivityForResult(intent, BUSCAR_VIDEO);
+                            break;
+                        case BUSCAR_SO:
+                            // Seleccio d´audio
+                            intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, BUSCAR_SO);
+                            break;
+                    }
+                }}).create().show();
+        }
+
     }
 
     // Un cop seleccionat el tipus i l´arxiu
