@@ -1,4 +1,4 @@
-package com.example.aplicaciomultimediamarc;
+package com.marc.multimedia;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -15,10 +15,8 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
@@ -28,6 +26,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSIONS_CODE = 2909;
+    private static final int ERROR_REQUEST_CODE = -1;
     private static final int BUSCAR_IMATGE = 0;
     private static final int BUSCAR_VIDEO = 1;
     private static final int BUSCAR_SO = 2;
@@ -118,25 +117,40 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, BUSCAR_IMATGE);
                             break;
+
+                        // Seleccio d´audio
+                        case BUSCAR_SO:
+                            // Custom File Picker
+                            intent = new Intent(MainActivity.this, FilePickerActivity.class);
+                            // Configuracio
+                            intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                                    .setCheckPermission(true)
+                                    .setShowAudios(true)
+                                    .setShowFiles(false)
+                                    .setShowImages(false)
+                                    .setShowVideos(false)
+                                    .setSingleChoiceMode(true)
+                                    .setSkipZeroSizeFiles(true)
+                                    .build());
+                            startActivityForResult(intent, BUSCAR_SO);
+                            break;
+
+                        // Selecció de video
                         case BUSCAR_VIDEO:
                             // Custom File Picker
                             intent = new Intent(MainActivity.this, FilePickerActivity.class);
                             // Configuracio
                             intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
                                     .setCheckPermission(true)
-                                    .setShowImages(false)
                                     .setSingleChoiceMode(true)
                                     .setSkipZeroSizeFiles(true)
                                     .build());
                             startActivityForResult(intent, BUSCAR_VIDEO);
                             break;
-                        case BUSCAR_SO:
-                            // Seleccio d´audio
-                            intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(intent, BUSCAR_SO);
-                            break;
                     }
+
                 }}).create().show();
+
         }
 
     }
@@ -150,27 +164,46 @@ public class MainActivity extends AppCompatActivity {
 
             // Uri del fitxer seleccionat
             Uri uri = data.getData();
+            // Fitxers seleccionats amb FilePickerActivity
+            ArrayList<MediaFile> fitxers = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
             // Intent
             Intent intent = null;
 
+            // Si no es selecciona cap fitxer amb el FilePickerActivity
+            if (fitxers != null && fitxers.size() == 0) {
+                requestCode = ERROR_REQUEST_CODE;
+            }
+
             switch(requestCode){
+
                 // Si l 'arxiu seleccionat és una imatge
                 case BUSCAR_IMATGE:
                     if (edicio){
                         intent = new Intent (this, EditarImagen.class).setData(uri);
-
                     }
                     else{
                         intent = new Intent (this, MostrarImagen.class).setData(uri);
                     }
                     break;
 
-                // Si l 'arxiu seleccionat és un vídeo
-                case BUSCAR_VIDEO:
-                    ArrayList<MediaFile> fitxers = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
+                // Si l 'arxiu seleccionat és d'audio
+                case BUSCAR_SO:
+
                     // Si es vol editar
                     if (edicio){
 
+                    }
+                    // Només visualitzat
+                    else{
+                        intent = new Intent (this, MostrarVideo.class).setData(fitxers.get(0).getUri());
+                    }
+                    break;
+
+                // Si l 'arxiu seleccionat és de video
+                case BUSCAR_VIDEO:
+
+                    // Si es vol editar
+                    if (edicio){
                         intent = new Intent (this, EditarVideo.class).setData(fitxers.get(0).getUri());
                         intent.putExtra("RUTA", fitxers.get(0).getPath());
                     }
@@ -180,12 +213,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
 
-                case BUSCAR_SO:
-                    // Falta implementar
-                    break;
-
                 default:
-                    Toast.makeText(MainActivity.this, "Error al obrir el fitxer", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "No s'ha pogut obrir el fitxer", Toast.LENGTH_LONG).show();
                     break;
             }
             // Inicia l´activitat corresponent

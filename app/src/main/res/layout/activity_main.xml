@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Captura d’arxiu"
+        android:text="CAPTURA"
         android:textAlignment="center"/>
 
     <ImageView
@@ -26,12 +26,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:src="@drawable/imagen"
+        android:src="@drawable/play"
         android:layout_gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reproduir arxiu"
+        android:text="REPRODUCCIÓ"
         android:textAlignment="center"/>
 
     <ImageView
@@ -39,12 +39,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:src="@drawable/editar"
+        android:src="@drawable/burbujas"
         android:layout_gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Editar arxiu"
+        android:text="EDICIÓ"
         android:textAlignment="center"/>
 
 </LinearLayout>

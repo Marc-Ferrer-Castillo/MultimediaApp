@@ -1,4 +1,4 @@
-package com.example.aplicaciomultimediamarc;
+package com.marc.multimedia;
 
 import android.annotation.SuppressLint;
 import android.media.MediaMetadataRetriever;
@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import java.io.File;
 import java.io.IOException;

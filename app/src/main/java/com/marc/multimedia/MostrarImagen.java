@@ -1,11 +1,9 @@
-package com.example.aplicaciomultimediamarc;
+package com.marc.multimedia;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MostrarImagen extends AppCompatActivity {
 

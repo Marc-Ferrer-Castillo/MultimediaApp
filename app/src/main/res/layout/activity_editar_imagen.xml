@@ -43,8 +43,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:layout_marginEnd="15dp"
+            android:paddingTop="15dp"
             android:baselineAlignBottom="true"
-            android:src="@drawable/recortar" />
+            android:src="@drawable/recorte" />
     </LinearLayout>
 
 

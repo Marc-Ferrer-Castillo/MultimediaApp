@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.example.aplicaciomultimediamarc;
+package com.marc.multimedia;
 
 import android.net.Uri;
 

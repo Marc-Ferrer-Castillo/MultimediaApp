@@ -1,4 +1,4 @@
-package com.example.aplicaciomultimediamarc;
+package com.marc.multimedia;
 
 import androidx.appcompat.app.AppCompatActivity;
 

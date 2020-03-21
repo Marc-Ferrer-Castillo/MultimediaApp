@@ -1,4 +1,4 @@
-package com.example.aplicaciomultimediamarc;
+package com.marc.multimedia;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
