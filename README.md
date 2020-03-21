@@ -1,6 +1,7 @@
 # MultimediaApp
 
-App that works with multimedia. Can trim Images, Video and Audio. Images can also be rotated and flipped horizontally/vertically
+Small App that works with multimedia. 
+Can trim Images, Video and Audio. Images can also be rotated and flipped horizontally/vertically
 
 School Activity [Centre d'estudis Politècnics](http://www.cepnet.net/)
 March 2020
