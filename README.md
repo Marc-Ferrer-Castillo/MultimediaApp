@@ -1,4 +1,4 @@
-# [MultimediaApp](https://github.com/Marc-Ferrer-Castillo/)
+# [MultimediaApp](https://github.com/Marc-Ferrer-Castillo/MultimediaApp)
 
 Small App that works with multimedia. 
 Can trim Images, Video and Audio. Images can also be rotated and flipped horizontally/vertically
