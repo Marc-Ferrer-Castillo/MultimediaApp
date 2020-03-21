@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,11 +21,12 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class EditarVideo extends AppCompatActivity {
 
-    public static final int REQUEST_PERMISSIONS_CODE = 2909;
     public static final int RECORTE_MINIMO = 1000;
     private VideoView videoView;
     private CountDownTimer countDownTimer;
@@ -37,24 +39,18 @@ public class EditarVideo extends AppCompatActivity {
 
          videoView = findViewById(R.id.videoeditor);
 
-        // Permisos
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.System.canWrite(this)) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSIONS_CODE);
-            }
-            else {
-                editarVideo(videoView, getIntent().getData() );
-            }
-        }
-        else {
-            editarVideo(videoView, getIntent().getData() );
-        }
+         Uri uri = getIntent().getData();
+         String rutaFitxer = getIntent().getStringExtra("RUTA");
+
+        editarVideo(videoView, uri, rutaFitxer );
+
     }
 
     // Editor de video
     @SuppressLint("ClickableViewAccessibility")
-    private void editarVideo(final VideoView videoView, Uri uri) {
+    private void editarVideo(final VideoView videoView, final Uri uri, final String ruta) {
+
+
         // El videoView usa la Uri recibida por parametro
         videoView.setVideoURI( uri );
 
@@ -208,6 +204,15 @@ public class EditarVideo extends AppCompatActivity {
             public void onClick(View v) {
 
                 // recortar y guardar video
+                try {
+
+                    Toast.makeText(EditarVideo.this, "Exportant video...", Toast.LENGTH_LONG).show();
+
+                    MediaUtil.cortarVideo(ruta, getExternalFilesDir(null) + "newvideo", controlIzquierdo.getProgress(), controlDerecho.getProgress(),
+                            true, true);
+                } catch (IOException e) {
+                    Toast.makeText(EditarVideo.this, "ERROR: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -230,22 +235,9 @@ public class EditarVideo extends AppCompatActivity {
         String tiempo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         int duracion = Integer.parseInt(tiempo);
 
-
         retriever.release();
 
         return duracion;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_PERMISSIONS_CODE) {
-            // permisos concedidos
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                editarVideo(videoView, getIntent().getData() );
-            }
-            else {
-                Toast.makeText(EditarVideo.this, "Permissos denegats", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 }
