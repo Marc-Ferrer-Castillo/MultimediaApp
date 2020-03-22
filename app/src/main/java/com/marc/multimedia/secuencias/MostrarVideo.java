@@ -1,10 +1,12 @@
-package com.marc.multimedia;
+package com.marc.multimedia.secuencias;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import com.marc.multimedia.R;
 
 /** Clase para mostrar video, se abre desde MainActivity.java*/
 public class MostrarVideo extends AppCompatActivity {

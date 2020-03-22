@@ -1,8 +1,10 @@
-package com.marc.multimedia;
+package com.marc.multimedia.imagen;
 
 import android.os.Bundle;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.marc.multimedia.R;
 
 /** Recibe Uri de imagen por parámetro desde MainActivity
  *  y lo muestra en el ZoomageView*/

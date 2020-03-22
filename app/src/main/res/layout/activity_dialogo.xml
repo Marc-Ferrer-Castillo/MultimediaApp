@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Dialogo">
+    tools:context=".imagen.Dialogo">
 
     <ImageView
         android:id="@+id/imagenrecortada"

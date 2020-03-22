@@ -17,21 +17,21 @@
         android:hardwareAccelerated="false"
         android:largeHeap="true">
 
-        <activity android:name=".Dialogo"
+        <activity android:name=".imagen.Dialogo"
                   android:theme="@android:style/Theme.DeviceDefault.Dialog" />
 
-        <activity android:name=".EditarVideo"
+        <activity android:name=".secuencias.EditarVideo"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".EditarImagen" />
+        <activity android:name=".imagen.EditarImagen" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
                   android:theme="@style/Base.Theme.AppCompat" />
 
-        <activity android:name=".MostrarVideo"
+        <activity android:name=".secuencias.MostrarVideo"
             android:screenOrientation="fullUser"/>
 
-        <activity android:name=".MostrarImagen" />
+        <activity android:name=".imagen.MostrarImagen" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

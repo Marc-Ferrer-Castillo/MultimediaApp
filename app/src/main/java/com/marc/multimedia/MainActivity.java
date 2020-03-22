@@ -20,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
+import com.marc.multimedia.imagen.EditarImagen;
+import com.marc.multimedia.imagen.MostrarImagen;
+import com.marc.multimedia.secuencias.EditarVideo;
+import com.marc.multimedia.secuencias.MostrarVideo;
 
 import java.util.ArrayList;
 
