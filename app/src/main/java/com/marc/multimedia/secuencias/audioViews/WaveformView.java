@@ -112,30 +112,29 @@ public class WaveformView extends View {
         Resources res = getResources();
         mGridPaint = new Paint();
         mGridPaint.setAntiAlias(false);
-        mGridPaint.setColor(res.getColor(R.color.colorGridLine));
+        mGridPaint.setColor(res.getColor(R.color.grid_line));
         mSelectedLinePaint = new Paint();
         mSelectedLinePaint.setAntiAlias(false);
-        mSelectedLinePaint.setColor(res.getColor(R.color.waveformSelected));
+        mSelectedLinePaint.setColor(res.getColor(R.color.waveform_selected));
         mUnselectedLinePaint = new Paint();
         mUnselectedLinePaint.setAntiAlias(false);
-        mUnselectedLinePaint.setColor(res.getColor(R.color.waveformUnselected));
+        mUnselectedLinePaint.setColor(res.getColor(R.color.waveform_unselected));
         mUnselectedBkgndLinePaint = new Paint();
         mUnselectedBkgndLinePaint.setAntiAlias(false);
-        mUnselectedBkgndLinePaint.setColor(res.getColor(R.color.waveformUnselectedBackground));
+        mUnselectedBkgndLinePaint.setColor(res.getColor(R.color.waveform_unselected_bkgnd_overlay));
         mBorderLinePaint = new Paint();
         mBorderLinePaint.setAntiAlias(true);
-        mBorderLinePaint.setStrokeWidth(6f);
-        mBorderLinePaint.setPathEffect(new DashPathEffect(new float[]{3.0f, 2.0f}, 0.0f));
-        mBorderLinePaint.setColor(res.getColor(R.color.colorSelectionBorder));
+        mBorderLinePaint.setStrokeWidth(1.5f);
+        mBorderLinePaint.setPathEffect(new DashPathEffect(new float[] { 3.0f, 2.0f }, 0.0f));
+        mBorderLinePaint.setColor(res.getColor(R.color.selection_border));
         mPlaybackLinePaint = new Paint();
         mPlaybackLinePaint.setAntiAlias(false);
-        mPlaybackLinePaint.setStrokeWidth(3f);
-        mPlaybackLinePaint.setColor(res.getColor(R.color.colorPlaybackIndicator));
+        mPlaybackLinePaint.setColor(res.getColor(R.color.playback_indicator));
         mTimecodePaint = new Paint();
         mTimecodePaint.setTextSize(12);
         mTimecodePaint.setAntiAlias(true);
-        mTimecodePaint.setColor(res.getColor(R.color.colorTimeCode));
-        mTimecodePaint.setShadowLayer(2, 1, 1, res.getColor(R.color.colorTimeCodeShadow));
+        mTimecodePaint.setColor(res.getColor(R.color.timecode));
+        mTimecodePaint.setShadowLayer(2, 1, 1, res.getColor(R.color.timecode_shadow));
 
         mGestureDetector = new GestureDetector(
                 context,

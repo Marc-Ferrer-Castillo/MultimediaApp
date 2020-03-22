@@ -166,7 +166,7 @@ public class RingdroidEditActivity extends Activity
         // they create.
         mWasGetContentIntent = intent.getBooleanExtra("was_get_content_intent", false);
 
-        mFilename = intent.getData().toString().replaceFirst("file://", "").replaceAll("%20", " ");
+        mFilename = intent.getStringExtra("RUTA");
         mSoundFile = null;
         mKeyDown = false;
 
@@ -176,11 +176,7 @@ public class RingdroidEditActivity extends Activity
 
         mHandler.postDelayed(mTimerRunnable, 100);
 
-        if (!mFilename.equals("record")) {
-            loadFromFile();
-        } else {
-            recordAudio();
-        }
+        loadFromFile();
     }
 
     private void closeThread(Thread thread) {

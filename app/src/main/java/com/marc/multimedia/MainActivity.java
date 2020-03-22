@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Si es vol editar
                     if (edicio){
-                        intent = new Intent (this, RingdroidSelectActivity.class).setData(fitxers.get(0).getUri());
+                        intent = new Intent (this, RingdroidEditActivity.class);
                         intent.putExtra("RUTA", fitxers.get(0).getPath());
                     }
                     // Només visualitzat

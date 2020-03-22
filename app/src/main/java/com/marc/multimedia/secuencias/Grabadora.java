@@ -46,7 +46,7 @@ public class Grabadora extends AppCompatActivity {
                 if (v == btnAudioTrim) {
                     //check storage permission before start trimming
                     if (checkStoragePermission()) {
-                        startActivityForResult(new Intent(Grabadora.this, AudioTrimmerActivity.class), ADD_AUDIO);
+                        startActivityForResult(new Intent(Grabadora.this, RingdroidSelectActivity.class), ADD_AUDIO);
                         overridePendingTransition(0, 0);
                     } else {
                         requestStoragePermission();
