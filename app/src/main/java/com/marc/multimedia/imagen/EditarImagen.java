@@ -1,4 +1,4 @@
-package com.marc.multimedia;
+package com.marc.multimedia.imagen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.marc.multimedia.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 /** Clase que se usa para previsualizar imagen

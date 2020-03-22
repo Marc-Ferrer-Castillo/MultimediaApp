@@ -20,6 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
+import com.marc.multimedia.imagen.EditarImagen;
+import com.marc.multimedia.imagen.MostrarImagen;
+import com.marc.multimedia.secuencias.EditarVideo;
+import com.marc.multimedia.secuencias.Grabadora;
+import com.marc.multimedia.secuencias.MostrarVideoAudio;
 
 import java.util.ArrayList;
 
@@ -215,11 +220,14 @@ public class MainActivity extends AppCompatActivity {
 
                     // Si es vol editar
                     if (edicio){
+                        intent = new Intent(MainActivity.this, Grabadora.class);
+                        startActivityForResult(intent, 1);
+                        overridePendingTransition(0, 0);
 
                     }
                     // Només visualitzat
                     else{
-                        intent = new Intent (this, MostrarVideo.class).setData(fitxers.get(0).getUri());
+                        intent = new Intent (this, MostrarVideoAudio.class).setData(fitxers.get(0).getUri());
                     }
                     break;
 
@@ -233,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     // Només visualitzat
                     else{
-                        intent = new Intent (this, MostrarVideo.class).setData(fitxers.get(0).getUri());
+                        intent = new Intent (this, MostrarVideoAudio.class).setData(fitxers.get(0).getUri());
                     }
                     break;
 

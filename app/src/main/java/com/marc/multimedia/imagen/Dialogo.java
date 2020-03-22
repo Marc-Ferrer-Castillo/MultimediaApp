@@ -1,4 +1,4 @@
-package com.marc.multimedia;
+package com.marc.multimedia.imagen;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.marc.multimedia.R;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 

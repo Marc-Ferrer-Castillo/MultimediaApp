@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.marc.multimedia;
+package com.marc.multimedia.secuencias;
 
 import android.net.Uri;
 

@@ -1,4 +1,4 @@
-package com.marc.multimedia;
+package com.marc.multimedia.secuencias;
 
 import android.annotation.SuppressLint;
 import android.media.MediaMetadataRetriever;
@@ -18,6 +18,8 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import com.marc.multimedia.R;
 
 import java.io.File;
 import java.io.IOException;
