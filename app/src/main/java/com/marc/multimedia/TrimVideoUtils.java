@@ -52,45 +52,61 @@ public class TrimVideoUtils {
 
     private static final String TAG = TrimVideoUtils.class.getSimpleName();
 
-    public static void startTrim(@NonNull File src, @NonNull String dst, long startMs, long endMs, @NonNull OnTrimVideoListener callback) throws IOException {
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-        final String fileName = "MP4_" + timeStamp + ".mp4";
-        final String filePath = dst + fileName;
-
-        File file = new File(filePath);
+    /** Método para preparar el fichero, su ruta y llamar a generarVideo()
+     *
+     * @param src Objeto File de entrada
+     * @param dst String con la ruta de salida
+     * @param startMs long Punto en milisegundos de corte inicial
+     * @param endMs long Punto en milisegundos de corte final
+     * @param callback Objecto OnTrimVideoListener     *
+     * @throws IOException*/
+    public static void recortar(@NonNull File src, @NonNull String dst, long startMs, long endMs, @NonNull OnTrimVideoListener callback) throws IOException {
+        // Crea fecha en formato año mes dia
+        final String fecha = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+        // El nombre del fichero sera:
+        final String nombreFichero = "Recorte_" + fecha + ".mp4";
+        // Ruta final del fichero + nombre del fichero
+        final String rutaFichero = dst + nombreFichero;
+        // Crea fichero con la ruta del fichero
+        File file = new File(rutaFichero);
+        // Crea los directorios en caso de que no existan en la ruta
         file.getParentFile().mkdirs();
-        Log.e(TAG, "Generated file path " + filePath);
-        genVideoUsingMp4Parser(src, file, startMs, endMs, callback);
+        // Muestra en el log (DEBUG)
+        Log.e(TAG, "Ruta del fichero generada = " + rutaFichero);
+        // Llama al método para generar el video
+        generarVideo(src, file, startMs, endMs, callback);
     }
+    /** Método para recorte de video
+     *  llamado desde recortar
+     *
+     * @param src Objeto File de entrada
+     * @param dst String con la ruta de salida
+     * @param startMs long Punto en milisegundos de corte inicial
+     * @param endMs long Punto en milisegundos de corte final
+     * @param callback Objecto OnTrimVideoListener     *
+     * @throws IOException*/
+    private static void generarVideo(@NonNull File src, @NonNull File dst, long startMs, long endMs, @NonNull OnTrimVideoListener callback) throws IOException {
 
-    private static void genVideoUsingMp4Parser(@NonNull File src, @NonNull File dst, long startMs, long endMs, @NonNull OnTrimVideoListener callback) throws IOException {
-        // NOTE: Switched to using FileDataSourceViaHeapImpl since it does not use memory mapping (VM).
-        // Otherwise we get OOM with large movie files.
         Movie movie = MovieCreator.build(new FileDataSourceViaHeapImpl(src.getAbsolutePath()));
 
         List<Track> tracks = movie.getTracks();
         movie.setTracks(new LinkedList<Track>());
-        // remove all tracks we will create new tracks from the old
 
         double startTime1 = startMs / 1000;
         double endTime1 = endMs / 1000;
 
         boolean timeCorrected = false;
 
-        // Here we try to find a track that has sync samples. Since we can only start decoding
-        // at such a sample we SHOULD make sure that the start of the new fragment is exactly
-        // such a frame
+        // Como sólo podemos comenzar a decodificar
+        // en una muestra, nos aseguramos de que el inicio del nuevo fragmento sea exactamente
+        // ese fotograma
         for (Track track : tracks) {
             if (track.getSyncSamples() != null && track.getSyncSamples().length > 0) {
                 if (timeCorrected) {
-                    // This exception here could be a false positive in case we have multiple tracks
-                    // with sync samples at exactly the same positions. E.g. a single movie containing
-                    // multiple qualities of the same video (Microsoft Smooth Streaming file)
-
                     throw new RuntimeException("The startTime has already been corrected by another track with SyncSample. Not Supported.");
                 }
                 startTime1 = correctTimeToSyncSample(track, startTime1, false);
-                endTime1 = correctTimeToSyncSample(track, endTime1, true);
+                endTime1   = correctTimeToSyncSample(track, endTime1, true);
                 timeCorrected = true;
             }
         }
@@ -107,11 +123,11 @@ public class TrimVideoUtils {
 
 
                 if (currentTime > lastTime && currentTime <= startTime1) {
-                    // current sample is still before the new starttime
+                    // La muestra actual esta aún antes que el punto de inicio nuevo
                     startSample1 = currentSample;
                 }
                 if (currentTime > lastTime && currentTime <= endTime1) {
-                    // current sample is after the new start time and still before the new endtime
+                    // La muestra actual esta después el punto de inicio nuevo y antes del punto final
                     endSample1 = currentSample;
                 }
                 lastTime = currentTime;
@@ -147,13 +163,12 @@ public class TrimVideoUtils {
             long delta = track.getSampleDurations()[i];
 
             if (Arrays.binarySearch(track.getSyncSamples(), currentSample + 1) >= 0) {
-                // samples always start with 1 but we start with zero therefore +1
                 timeOfSyncSamples[Arrays.binarySearch(track.getSyncSamples(), currentSample + 1)] = currentTime;
             }
             currentTime += (double) delta / (double) track.getTrackMetaData().getTimescale();
             currentSample++;
-
         }
+
         double previous = 0;
         for (double timeOfSyncSample : timeOfSyncSamples) {
             if (timeOfSyncSample > cutHere) {

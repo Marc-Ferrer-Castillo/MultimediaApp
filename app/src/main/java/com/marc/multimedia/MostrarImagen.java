@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
-
+/** Recibe Uri de imagen por parámetro desde MainActivity
+ *  y lo muestra en el ZoomageView*/
 public class MostrarImagen extends AppCompatActivity {
 
     private ImageView imagen;

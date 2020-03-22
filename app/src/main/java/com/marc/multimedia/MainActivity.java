@@ -25,11 +25,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    /**Constantes REQUEST_CODE*/
     private static final int REQUEST_PERMISSIONS_CODE = 2909;
     private static final int ERROR_REQUEST_CODE = -1;
-    private static final int BUSCAR_IMATGE = 0;
-    private static final int BUSCAR_VIDEO = 1;
-    private static final int BUSCAR_SO = 2;
+    private static final int BUSCAR_IMATGE_REQUEST_CODE = 0;
+    private static final int BUSCAR_VIDEO_REQUEST_CODE = 1;
+    private static final int BUSCAR_SO_REQUEST_CODE = 2;
+
     /** Si edicio es true se abren actividades diferentes */
     private boolean edicio;
     /** Si permisosConcedidos es false no se utilizar funciones de lectura/escritura */
@@ -128,13 +130,13 @@ public class MainActivity extends AppCompatActivity {
                     switch (seleccio){
 
                         // Seleccio d´imatge
-                        case BUSCAR_IMATGE:
+                        case BUSCAR_IMATGE_REQUEST_CODE:
                             intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(intent, BUSCAR_IMATGE);
+                            startActivityForResult(intent, BUSCAR_IMATGE_REQUEST_CODE);
                             break;
 
                         // Seleccio d´audio
-                        case BUSCAR_SO:
+                        case BUSCAR_SO_REQUEST_CODE:
                             // Custom File Picker
                             intent = new Intent(MainActivity.this, FilePickerActivity.class);
 
@@ -149,11 +151,11 @@ public class MainActivity extends AppCompatActivity {
                                     .setSkipZeroSizeFiles(true)
                                     .build());
 
-                            startActivityForResult(intent, BUSCAR_SO);
+                            startActivityForResult(intent, BUSCAR_SO_REQUEST_CODE);
                             break;
 
                         // Selecció de video
-                        case BUSCAR_VIDEO:
+                        case BUSCAR_VIDEO_REQUEST_CODE:
                             // Custom File Picker
                             intent = new Intent(MainActivity.this, FilePickerActivity.class);
                             // Configuración del filePicker
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                                     .setSkipZeroSizeFiles(true)
                                     .build());
 
-                            startActivityForResult(intent, BUSCAR_VIDEO);
+                            startActivityForResult(intent, BUSCAR_VIDEO_REQUEST_CODE);
                             break;
                     }
 
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             switch(requestCode){
 
                 // Si l 'arxiu seleccionat és una imatge
-                case BUSCAR_IMATGE:
+                case BUSCAR_IMATGE_REQUEST_CODE:
                     if (edicio){
                         intent = new Intent (this, EditarImagen.class).setData(uri);
                     }
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 // Si l 'arxiu seleccionat és d'audio
-                case BUSCAR_SO:
+                case BUSCAR_SO_REQUEST_CODE:
 
                     // Si es vol editar
                     if (edicio){
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 // Si l 'arxiu seleccionat és de video
-                case BUSCAR_VIDEO:
+                case BUSCAR_VIDEO_REQUEST_CODE:
 
                     // Si es vol editar
                     if (edicio){

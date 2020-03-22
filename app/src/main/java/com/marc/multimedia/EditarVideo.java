@@ -208,7 +208,7 @@ public class EditarVideo extends AppCompatActivity {
 
                     final File file = new File(ruta);
 
-                    TrimVideoUtils.startTrim(file, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator,
+                    TrimVideoUtils.recortar(file, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator,
                             controlIzquierdo.getProgress(), controlDerecho.getProgress(), mOnTrimVideoListener );
 
                     Toast.makeText(EditarVideo.this, "Video exportat a: " +
