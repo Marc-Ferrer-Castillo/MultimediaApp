@@ -40,6 +40,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".secuencias.RingdroidEditActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize"
+            android:hardwareAccelerated="true">
+        </activity>
+
+        <activity android:name=".secuencias.RingdroidSelectActivity"
+            android:label="@string/main_activity_label">
+
+        </activity>
+
     </application>
 
 </manifest>

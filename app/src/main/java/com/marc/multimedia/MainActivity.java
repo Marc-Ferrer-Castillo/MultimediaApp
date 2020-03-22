@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,8 @@ import com.marc.multimedia.imagen.EditarImagen;
 import com.marc.multimedia.imagen.MostrarImagen;
 import com.marc.multimedia.secuencias.EditarVideo;
 import com.marc.multimedia.secuencias.MostrarVideo;
+import com.marc.multimedia.secuencias.RingdroidEditActivity;
+import com.marc.multimedia.secuencias.RingdroidSelectActivity;
 
 import java.util.ArrayList;
 
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean edicio;
     /** Si permisosConcedidos es false no se utilizar funciones de lectura/escritura */
     private boolean permisosConcedidos = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,7 +225,8 @@ public class MainActivity extends AppCompatActivity {
 
                     // Si es vol editar
                     if (edicio){
-
+                        intent = new Intent (this, RingdroidSelectActivity.class).setData(fitxers.get(0).getUri());
+                        intent.putExtra("RUTA", fitxers.get(0).getPath());
                     }
                     // Només visualitzat
                     else{
@@ -233,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                     // Si es vol editar
                     if (edicio){
                         intent = new Intent (this, EditarVideo.class).setData(fitxers.get(0).getUri());
-                        intent.putExtra("RUTA", fitxers.get(0).getPath());
+
                     }
                     // Només visualitzat
                     else{
