@@ -23,8 +23,8 @@ import com.jaiselrahman.filepicker.model.MediaFile;
 import com.marc.multimedia.imagen.EditarImagen;
 import com.marc.multimedia.imagen.MostrarImagen;
 import com.marc.multimedia.secuencias.EditarVideo;
-import com.marc.multimedia.secuencias.MostrarVideo;
-import com.marc.multimedia.secuencias.RingdroidEditActivity;
+import com.marc.multimedia.secuencias.MostrarSecuencia;
+import com.marc.multimedia.secuencias.EditarAudio;
 
 import java.util.ArrayList;
 
@@ -222,12 +222,12 @@ public class MainActivity extends AppCompatActivity {
 
                     // Si es vol editar
                     if (edicio){
-                        intent = new Intent (this, RingdroidEditActivity.class);
+                        intent = new Intent (this, EditarAudio.class);
                         intent.putExtra("RUTA", fitxers.get(0).getPath());
                     }
                     // Només visualitzat
                     else{
-                        intent = new Intent (this, MostrarVideo.class).setData(fitxers.get(0).getUri());
+                        intent = new Intent (this, MostrarSecuencia.class).setData(fitxers.get(0).getUri());
                     }
                     break;
 
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     // Només visualitzat
                     else{
-                        intent = new Intent (this, MostrarVideo.class).setData(fitxers.get(0).getUri());
+                        intent = new Intent (this, MostrarSecuencia.class).setData(fitxers.get(0).getUri());
                     }
                     break;
 

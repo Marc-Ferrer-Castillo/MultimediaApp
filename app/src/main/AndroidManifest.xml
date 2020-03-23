@@ -20,15 +20,14 @@
         <activity android:name=".imagen.Dialogo"
                   android:theme="@android:style/Theme.DeviceDefault.Dialog" />
 
-        <activity android:name=".secuencias.EditarVideo"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".secuencias.EditarVideo"/>
 
         <activity android:name=".imagen.EditarImagen" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
                   android:theme="@style/Base.Theme.AppCompat" />
 
-        <activity android:name=".secuencias.MostrarVideo"
+        <activity android:name=".secuencias.MostrarSecuencia"
             android:screenOrientation="fullUser"/>
 
         <activity android:name=".imagen.MostrarImagen" />
@@ -41,7 +40,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".secuencias.RingdroidEditActivity"
+        <activity android:name=".secuencias.EditarAudio"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="adjustResize"
             android:hardwareAccelerated="true">

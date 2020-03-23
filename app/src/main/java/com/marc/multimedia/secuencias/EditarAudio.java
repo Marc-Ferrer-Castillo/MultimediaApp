@@ -34,12 +34,9 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.style.UpdateLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -67,7 +64,7 @@ import java.io.StringWriter;
  * the waveform display, current horizontal offset, marker handles,
  * start / end text boxes, and handles all of the buttons and controls.
  */
-public class RingdroidEditActivity extends Activity
+public class EditarAudio extends Activity
     implements MarkerView.MarkerListener,
                WaveformView.WaveformListener
 {
@@ -575,7 +572,7 @@ public class RingdroidEditActivity extends Activity
         mLoadingLastUpdateTime = getCurrentTime();
         mLoadingKeepGoing = true;
         mFinishActivity = false;
-        mProgressDialog = new ProgressDialog(RingdroidEditActivity.this);
+        mProgressDialog = new ProgressDialog(EditarAudio.this);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setTitle(R.string.progress_dialog_loading);
         mProgressDialog.setCancelable(true);
@@ -657,7 +654,7 @@ public class RingdroidEditActivity extends Activity
                     };
                     mHandler.post(runnable);
                 } else if (mFinishActivity){
-                    RingdroidEditActivity.this.finish();
+                    EditarAudio.this.finish();
                 }
             }
         };
@@ -838,9 +835,10 @@ public class RingdroidEditActivity extends Activity
 
     private void enableDisableButtons() {
         if (mIsPlaying) {
-            mPlayButton.setImageResource(android.R.drawable.ic_media_pause);
+            mPlayButton.setImageResource(R.drawable.pausa);
             mPlayButton.setContentDescription(getResources().getText(R.string.stop));
         } else {
+            mPlayButton.setImageResource(R.drawable.play);
 
             mPlayButton.setContentDescription(getResources().getText(R.string.play));
         }
@@ -984,7 +982,7 @@ public class RingdroidEditActivity extends Activity
             title = getResources().getText(R.string.alert_title_success);
         }
 
-        new AlertDialog.Builder(RingdroidEditActivity.this)
+        new AlertDialog.Builder(EditarAudio.this)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(
@@ -1285,7 +1283,7 @@ public class RingdroidEditActivity extends Activity
         // If it's a notification, give the user the option of making
         // this their default notification.  If they say no, we're finished.
         if (mNewFileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
-            new AlertDialog.Builder(RingdroidEditActivity.this)
+            new AlertDialog.Builder(EditarAudio.this)
                 .setTitle(R.string.alert_title_success)
                 .setMessage(R.string.set_default_notification)
                 .setPositiveButton(R.string.alert_yes_button,
@@ -1293,7 +1291,7 @@ public class RingdroidEditActivity extends Activity
                         public void onClick(DialogInterface dialog,
                                             int whichButton) {
                             RingtoneManager.setActualDefaultRingtoneUri(
-                                RingdroidEditActivity.this,
+                                EditarAudio.this,
                                 RingtoneManager.TYPE_NOTIFICATION,
                                 newUri);
                             finish();
@@ -1321,11 +1319,11 @@ public class RingdroidEditActivity extends Activity
                     switch (actionId) {
                     case R.id.button_make_default:
                         RingtoneManager.setActualDefaultRingtoneUri(
-                            RingdroidEditActivity.this,
+                            EditarAudio.this,
                             RingtoneManager.TYPE_RINGTONE,
                             newUri);
                         Toast.makeText(
-                            RingdroidEditActivity.this,
+                            EditarAudio.this,
                             R.string.default_ringtone_success_message,
                             Toast.LENGTH_SHORT)
                             .show();

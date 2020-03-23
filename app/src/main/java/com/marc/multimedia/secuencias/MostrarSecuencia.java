@@ -9,7 +9,7 @@ import android.widget.VideoView;
 import com.marc.multimedia.R;
 
 /** Clase para mostrar video, se abre desde MainActivity.java*/
-public class MostrarVideo extends AppCompatActivity {
+public class MostrarSecuencia extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
