@@ -46,7 +46,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marc.multimedia.R;
-import com.marc.multimedia.secuencias.audioUtils.AfterSaveActionDialog;
 import com.marc.multimedia.secuencias.audioUtils.FileSaveDialog;
 import com.marc.multimedia.secuencias.audioUtils.MarkerView;
 import com.marc.multimedia.secuencias.audioUtils.SamplePlayer;
@@ -124,6 +123,8 @@ public class EditarAudio extends Activity
     private Thread mRecordAudioThread;
     private Thread mSaveSoundFileThread;
 
+    private ImageView guardar;
+
     // Result codes
     private static final int REQUEST_CODE_CHOOSE_CONTACT = 1;
 
@@ -143,7 +144,7 @@ public class EditarAudio extends Activity
         setContentView(R.layout.editor);
 
         // Boton guardar
-        ImageView guardar = findViewById(R.id.action_save);
+        guardar = findViewById(R.id.action_save);
 
         mPlayer = null;
         mIsPlaying = false;
@@ -162,19 +163,10 @@ public class EditarAudio extends Activity
 
         // Carga la interfaz grafica
         loadGui();
-        loadGui();
 
         mHandler.postDelayed(mTimerRunnable, 100);
 
         loadFromFile();
-
-        // Click en guardar
-        guardar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSave();
-            }
-        });
     }
 
     private void closeThread(Thread thread) {
@@ -244,7 +236,9 @@ public class EditarAudio extends Activity
         final int saveZoomLevel = mWaveformView.getZoomLevel();
         super.onConfigurationChanged(newConfig);
 
+        setContentView(R.layout.editor);
         loadGui();
+
 
         mHandler.postDelayed(new Runnable() {
                 public void run() {
@@ -499,6 +493,9 @@ public class EditarAudio extends Activity
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mDensity = metrics.density;
 
+        // Boton guardar
+        guardar = findViewById(R.id.action_save);
+
         /*mMarkerLeftInset = (int)(46 * mDensity);
         mMarkerRightInset = (int)(48 * mDensity);
         mMarkerTopOffset = (int)(10 * mDensity);
@@ -551,6 +548,14 @@ public class EditarAudio extends Activity
         mEndMarker.setFocusable(true);
         mEndMarker.setFocusableInTouchMode(true);
         mEndVisible = true;
+
+        // Click en guardar
+        guardar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSave();
+            }
+        });
 
         updateDisplay();
     }
@@ -1262,100 +1267,14 @@ public class EditarAudio extends Activity
         final Uri newUri = getContentResolver().insert(uri, values);
         setResult(RESULT_OK, new Intent().setData(newUri));
 
-        // If Ringdroid was launched to get content, just return
-        if (mWasGetContentIntent) {
-            finish();
-            return;
-        }
+        // Guardado con exito
+        Toast.makeText(this,
+                R.string.save_success_message,
+                Toast.LENGTH_SHORT).show();
 
-        // There's nothing more to do with music or an alarm.  Show a
-        // success message and then quit.
-        if (mNewFileKind == FileSaveDialog.FILE_KIND_MUSIC ||
-            mNewFileKind == FileSaveDialog.FILE_KIND_ALARM) {
-            Toast.makeText(this,
-                           R.string.save_success_message,
-                           Toast.LENGTH_SHORT)
-                .show();
-            finish();
-            return;
-        }
-
-        // If it's a notification, give the user the option of making
-        // this their default notification.  If they say no, we're finished.
-        if (mNewFileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
-            new AlertDialog.Builder(EditarAudio.this)
-                .setTitle(R.string.alert_title_success)
-                .setMessage(R.string.set_default_notification)
-                .setPositiveButton(R.string.alert_yes_button,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int whichButton) {
-                            RingtoneManager.setActualDefaultRingtoneUri(
-                                EditarAudio.this,
-                                RingtoneManager.TYPE_NOTIFICATION,
-                                newUri);
-                            finish();
-                        }
-                    })
-                .setNegativeButton(
-                    R.string.alert_no_button,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            finish();
-                        }
-                    })
-                .setCancelable(false)
-                .show();
-            return;
-        }
-
-        // If we get here, that means the type is a ringtone.  There are
-        // three choices: make this your default ringtone, assign it to a
-        // contact, or do nothing.
-
-        @SuppressLint("HandlerLeak") final Handler handler = new Handler() {
-                public void handleMessage(Message response) {
-                    int actionId = response.arg1;
-                    switch (actionId) {
-                    case R.id.button_make_default:
-                        RingtoneManager.setActualDefaultRingtoneUri(
-                            EditarAudio.this,
-                            RingtoneManager.TYPE_RINGTONE,
-                            newUri);
-                        Toast.makeText(
-                            EditarAudio.this,
-                            R.string.default_ringtone_success_message,
-                            Toast.LENGTH_SHORT)
-                            .show();
-                        finish();
-                        break;
-                    case R.id.button_choose_contact:
-                        chooseContactForRingtone(newUri);
-                        break;
-                    default:
-                    case R.id.button_do_nothing:
-                        finish();
-                        break;
-                    }
-                }
-            };
-        Message message = Message.obtain(handler);
-        AfterSaveActionDialog dlog = new AfterSaveActionDialog(
-            this, message);
-        dlog.show();
     }
 
-    private void chooseContactForRingtone(Uri uri) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_EDIT, uri);
-            intent.setClassName(
-                "com.ringdroid",
-                "com.ringdroid.ChooseContactActivity");
-            startActivityForResult(intent, REQUEST_CODE_CHOOSE_CONTACT);
-        } catch (Exception e) {
-            Log.e("Ringdroid", "Couldn't open Choose Contact window");
-        }
-    }
+
 
     private void onSave() {
         if (mIsPlaying) {
