@@ -47,11 +47,6 @@
             android:hardwareAccelerated="true">
         </activity>
 
-        <activity android:name=".secuencias.RingdroidSelectActivity"
-            android:label="@string/main_activity_label">
-
-        </activity>
-
     </application>
 
 </manifest>

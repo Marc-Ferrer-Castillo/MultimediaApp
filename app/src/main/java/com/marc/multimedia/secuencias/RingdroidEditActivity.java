@@ -73,11 +73,7 @@ public class RingdroidEditActivity extends Activity
 {
     private long mLoadingLastUpdateTime;
     private boolean mLoadingKeepGoing;
-    private long mRecordingLastUpdateTime;
-    private boolean mRecordingKeepGoing;
-    private double mRecordingTime;
     private boolean mFinishActivity;
-    private TextView mTimerTextView;
     private AlertDialog mAlertDialog;
     private ProgressDialog mProgressDialog;
     private SoundFile mSoundFile;
@@ -122,10 +118,10 @@ public class RingdroidEditActivity extends Activity
     private int mTouchInitialEndPos;
     private long mWaveformTouchStartMsec;
     private float mDensity;
-    private int mMarkerLeftInset;
-    private int mMarkerRightInset;
-    private int mMarkerTopOffset;
-    private int mMarkerBottomOffset;
+    private int mMarkerLeftInset = 0;
+    private int mMarkerRightInset = 0;
+    private int mMarkerTopOffset = 0;
+    private int mMarkerBottomOffset = 0;
 
     private Thread mLoadSoundFileThread;
     private Thread mRecordAudioThread;
@@ -199,7 +195,6 @@ public class RingdroidEditActivity extends Activity
         Log.v("Ringdroid", "EditActivity OnDestroy");
 
         mLoadingKeepGoing = false;
-        mRecordingKeepGoing = false;
         closeThread(mLoadSoundFileThread);
         closeThread(mRecordAudioThread);
         closeThread(mSaveSoundFileThread);
@@ -267,41 +262,6 @@ public class RingdroidEditActivity extends Activity
             }, 500);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_options, menu);
-
-        return true;
-    }
-
-    /*@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_save).setVisible(true);
-        menu.findItem(R.id.action_reset).setVisible(true);
-        menu.findItem(R.id.action_about).setVisible(true);
-        return true;
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.action_save:
-            onSave();
-            return true;
-        case R.id.action_reset:
-            resetPositions();
-            mOffsetGoal = 0;
-            updateDisplay();
-            return true;
-        case R.id.action_about:
-            onAbout(this);
-            return true;
-        default:
-            return false;
-        }
-    }*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -704,111 +664,7 @@ public class RingdroidEditActivity extends Activity
         mLoadSoundFileThread.start();
     }
 
-    private void recordAudio() {
-        mFile = null;
-        mTitle = null;
-        mArtist = null;
 
-        mRecordingLastUpdateTime = getCurrentTime();
-        mRecordingKeepGoing = true;
-        mFinishActivity = false;
-        AlertDialog.Builder adBuilder = new AlertDialog.Builder(RingdroidEditActivity.this);
-        adBuilder.setTitle(getResources().getText(R.string.progress_dialog_recording));
-        adBuilder.setCancelable(true);
-        adBuilder.setNegativeButton(
-            getResources().getText(R.string.progress_dialog_cancel),
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mRecordingKeepGoing = false;
-                    mFinishActivity = true;
-                }
-            });
-        adBuilder.setPositiveButton(
-            getResources().getText(R.string.progress_dialog_stop),
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mRecordingKeepGoing = false;
-                }
-            });
-        // TODO(nfaralli): try to use a FrameLayout and pass it to the following inflate call.
-        // Using null, android:layout_width etc. may not work (hence text is at the top of view).
-        // On the other hand, if the text is big enough, this is good enough.
-        adBuilder.setView(getLayoutInflater().inflate(R.layout.record_audio, null));
-        mAlertDialog = adBuilder.show();
-        mTimerTextView = (TextView)mAlertDialog.findViewById(R.id.record_audio_timer);
-
-        final SoundFile.ProgressListener listener =
-            new SoundFile.ProgressListener() {
-                public boolean reportProgress(double elapsedTime) {
-                    long now = getCurrentTime();
-                    if (now - mRecordingLastUpdateTime > 5) {
-                        mRecordingTime = elapsedTime;
-                        // Only UI thread can update Views such as TextViews.
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                int min = (int)(mRecordingTime/60);
-                                float sec = (float)(mRecordingTime - 60 * min);
-                                mTimerTextView.setText(String.format("%d:%05.2f", min, sec));
-                            }
-                        });
-                        mRecordingLastUpdateTime = now;
-                    }
-                    return mRecordingKeepGoing;
-                }
-            };
-
-        // Record the audio stream in a background thread
-        mRecordAudioThread = new Thread() {
-            public void run() {
-                try {
-                    mSoundFile = SoundFile.record(listener);
-                    if (mSoundFile == null) {
-                        mAlertDialog.dismiss();
-                        Runnable runnable = new Runnable() {
-                            public void run() {
-                                showFinalAlert(
-                                    new Exception(),
-                                    getResources().getText(R.string.record_error)
-                                );
-                            }
-                        };
-                        mHandler.post(runnable);
-                        return;
-                    }
-                    mPlayer = new SamplePlayer(mSoundFile);
-                } catch (final Exception e) {
-                    mAlertDialog.dismiss();
-                    e.printStackTrace();
-                    mInfoContent = e.toString();
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            mInfo.setText(mInfoContent);
-                        }
-                    });
-
-                    Runnable runnable = new Runnable() {
-                        public void run() {
-                            showFinalAlert(e, getResources().getText(R.string.record_error));
-                        }
-                    };
-                    mHandler.post(runnable);
-                    return;
-                }
-                mAlertDialog.dismiss();
-                if (mFinishActivity){
-                    RingdroidEditActivity.this.finish();
-                } else {
-                    Runnable runnable = new Runnable() {
-                        public void run() {
-                            finishOpeningSoundFile();
-                        }
-                    };
-                    mHandler.post(runnable);
-                }
-            }
-        };
-        mRecordAudioThread.start();
-    }
 
     private void finishOpeningSoundFile() {
         mWaveformView.setSoundFile(mSoundFile);
@@ -985,7 +841,7 @@ public class RingdroidEditActivity extends Activity
             mPlayButton.setImageResource(android.R.drawable.ic_media_pause);
             mPlayButton.setContentDescription(getResources().getText(R.string.stop));
         } else {
-            mPlayButton.setImageResource(android.R.drawable.ic_media_play);
+
             mPlayButton.setContentDescription(getResources().getText(R.string.play));
         }
     }
