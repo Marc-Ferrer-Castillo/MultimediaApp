@@ -16,6 +16,7 @@
 
 package com.marc.multimedia.secuencias;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -33,19 +34,19 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.style.UpdateLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.marc.multimedia.R;
 import com.marc.multimedia.secuencias.audioUtils.AfterSaveActionDialog;
@@ -141,42 +142,46 @@ public class RingdroidEditActivity extends Activity
     //
     // Public methods and protected overrides
     //
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         Log.v("Ringdroid", "EditActivity OnCreate");
         super.onCreate(icicle);
+        setContentView(R.layout.editor);
+
+        // Boton guardar
+        ImageView guardar = findViewById(R.id.action_save);
 
         mPlayer = null;
         mIsPlaying = false;
-
         mAlertDialog = null;
         mProgressDialog = null;
-
         mLoadSoundFileThread = null;
         mRecordAudioThread = null;
         mSaveSoundFileThread = null;
-
         Intent intent = getIntent();
-
-        // If the Ringdroid media select activity was launched via a
-        // GET_CONTENT intent, then we shouldn't display a "saved"
-        // message when the user saves, we should just return whatever
-        // they create.
         mWasGetContentIntent = intent.getBooleanExtra("was_get_content_intent", false);
-
+        // Recibe la ruta del fichero por intent
         mFilename = intent.getStringExtra("RUTA");
         mSoundFile = null;
         mKeyDown = false;
-
         mHandler = new Handler();
 
+        // Carga la interfaz grafica
+        loadGui();
         loadGui();
 
         mHandler.postDelayed(mTimerRunnable, 100);
 
         loadFromFile();
+
+        // Click en guardar
+        guardar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSave();
+            }
+        });
     }
 
     private void closeThread(Thread thread) {
@@ -270,16 +275,16 @@ public class RingdroidEditActivity extends Activity
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.action_save).setVisible(true);
         menu.findItem(R.id.action_reset).setVisible(true);
         menu.findItem(R.id.action_about).setVisible(true);
         return true;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_save:
@@ -296,7 +301,7 @@ public class RingdroidEditActivity extends Activity
         default:
             return false;
         }
-    }
+    }*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -533,40 +538,37 @@ public class RingdroidEditActivity extends Activity
      */
     private void loadGui() {
         // Inflate our UI from its XML layout description.
-        setContentView(R.layout.editor);
-
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mDensity = metrics.density;
 
-        mMarkerLeftInset = (int)(46 * mDensity);
+        /*mMarkerLeftInset = (int)(46 * mDensity);
         mMarkerRightInset = (int)(48 * mDensity);
         mMarkerTopOffset = (int)(10 * mDensity);
-        mMarkerBottomOffset = (int)(10 * mDensity);
+        mMarkerBottomOffset = (int)(mDensity);*/
 
-        mStartText = (TextView)findViewById(R.id.starttext);
+        mStartText = findViewById(R.id.starttext);
         mStartText.addTextChangedListener(mTextWatcher);
-        mEndText = (TextView)findViewById(R.id.endtext);
+        mEndText = findViewById(R.id.endtext);
         mEndText.addTextChangedListener(mTextWatcher);
-
-        mPlayButton = (ImageButton)findViewById(R.id.play);
+        mPlayButton = findViewById(R.id.play);
         mPlayButton.setOnClickListener(mPlayListener);
-        mRewindButton = (ImageButton)findViewById(R.id.rew);
+        mRewindButton = findViewById(R.id.rew);
         mRewindButton.setOnClickListener(mRewindListener);
-        mFfwdButton = (ImageButton)findViewById(R.id.ffwd);
+        mFfwdButton = findViewById(R.id.ffwd);
         mFfwdButton.setOnClickListener(mFfwdListener);
 
-        TextView markStartButton = (TextView) findViewById(R.id.mark_start);
+        TextView markStartButton = findViewById(R.id.mark_start);
         markStartButton.setOnClickListener(mMarkStartListener);
-        TextView markEndButton = (TextView) findViewById(R.id.mark_end);
+        TextView markEndButton = findViewById(R.id.mark_end);
         markEndButton.setOnClickListener(mMarkEndListener);
 
         enableDisableButtons();
 
-        mWaveformView = (WaveformView)findViewById(R.id.waveform);
+        mWaveformView = findViewById(R.id.waveform);
         mWaveformView.setListener(this);
 
-        mInfo = (TextView)findViewById(R.id.info);
+        mInfo = findViewById(R.id.info);
         mInfo.setText(mCaption);
 
         mMaxPos = 0;
@@ -579,14 +581,14 @@ public class RingdroidEditActivity extends Activity
             mMaxPos = mWaveformView.maxPos();
         }
 
-        mStartMarker = (MarkerView)findViewById(R.id.startmarker);
+        mStartMarker = findViewById(R.id.startmarker);
         mStartMarker.setListener(this);
         mStartMarker.setAlpha(1f);
         mStartMarker.setFocusable(true);
         mStartMarker.setFocusableInTouchMode(true);
         mStartVisible = true;
 
-        mEndMarker = (MarkerView)findViewById(R.id.endmarker);
+        mEndMarker = findViewById(R.id.endmarker);
         mEndMarker.setListener(this);
         mEndMarker.setAlpha(1f);
         mEndMarker.setFocusable(true);
@@ -1457,7 +1459,7 @@ public class RingdroidEditActivity extends Activity
         // three choices: make this your default ringtone, assign it to a
         // contact, or do nothing.
 
-        final Handler handler = new Handler() {
+        @SuppressLint("HandlerLeak") final Handler handler = new Handler() {
                 public void handleMessage(Message response) {
                     int actionId = response.arg1;
                     switch (actionId) {
@@ -1506,7 +1508,7 @@ public class RingdroidEditActivity extends Activity
             handlePause();
         }
 
-        final Handler handler = new Handler() {
+        @SuppressLint("HandlerLeak") final Handler handler = new Handler() {
                 public void handleMessage(Message response) {
                     CharSequence newTitle = (CharSequence)response.obj;
                     mNewFileKind = response.arg1;

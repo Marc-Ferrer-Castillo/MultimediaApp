@@ -3,17 +3,14 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
 
-    <item android:id="@+id/action_save"
-          android:icon="@drawable/content_save"
-          android:title="@string/menu_save"
-          android:showAsAction="always|withText" />
 
-    <item android:id="@+id/action_reset"
+
+   <!-- <item android:id="@+id/action_reset"
           android:title="@string/menu_reset"
           android:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_about"
           android:title="@string/menu_about"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="ifRoom" />-->
 
 </menu>
