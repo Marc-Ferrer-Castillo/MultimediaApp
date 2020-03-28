@@ -22,6 +22,7 @@ import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
 import com.marc.multimedia.imagen.EditarImagen;
 import com.marc.multimedia.imagen.MostrarImagen;
+import com.marc.multimedia.secuencias.CapturaAudio;
 import com.marc.multimedia.secuencias.EditarVideo;
 import com.marc.multimedia.secuencias.MostrarSecuencia;
 import com.marc.multimedia.secuencias.EditarAudio;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     /**Constantes REQUEST_CODE*/
-    private static final int REQUEST_PERMISSIONS_CODE = 2909;
+    public static final int REQUEST_PERMISSIONS_CODE = 2909;
     private static final int ERROR_REQUEST_CODE = -1;
     private static final int BUSCAR_IMATGE_REQUEST_CODE = 0;
     private static final int BUSCAR_VIDEO_REQUEST_CODE = 1;
@@ -73,10 +74,35 @@ public class MainActivity extends AppCompatActivity {
         capturar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Abre la cámara si se encuntra hardware de cámara
-                if (hiHaCamara()) {
-                    startActivity(new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA));
-                }
+                // Objeto para crear diálogos
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                // Posibles opciones de tipo de archivo a escoger
+                String[] opciones = {"Imatge / Video", "Audio"};
+
+                // Crea diálogo preguntado por el tipo de fichero deseado
+                builder.setTitle("Selecciona un tipus de captura").setItems(opciones, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int seleccio) {
+
+                        // Intent para la actividad a abrir
+                        Intent intent = null;
+
+                        // Según el tipo de fichero seleccionado
+                        switch (seleccio){
+                            // Captura d´Imatge/video
+                            case 0:
+                                // Abre la cámara si se encuntra hardware de cámara
+                                if (hiHaCamara()) {
+                                    startActivity(new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA));
+                                }
+                                break;
+                            // Captura d´Audio
+                            case 1:
+                                    startActivity(new Intent(MainActivity.this, CapturaAudio.class));
+                                break;
+                        }
+                    }
+                }).create().show();
             }
         });
 
@@ -179,11 +205,9 @@ public class MainActivity extends AppCompatActivity {
                             startActivityForResult(intent, BUSCAR_VIDEO_REQUEST_CODE);
                             break;
                     }
-
-                }}).create().show();
-
+                }
+            }).create().show();
         }
-
     }
 
     // Un cop seleccionat el tipus i l´arxiu

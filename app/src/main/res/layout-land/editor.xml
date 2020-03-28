@@ -35,7 +35,7 @@
         android:layout_height="0px"
         android:layout_weight="1">
 
-        <com.marc.multimedia.secuencias.audioUtils.WaveformView
+        <com.marc.multimedia.secuencias.audioViews.WaveformView
             android:id="@+id/waveform"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

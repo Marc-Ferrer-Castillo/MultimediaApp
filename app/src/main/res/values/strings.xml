@@ -25,16 +25,17 @@
        Editar actividad
        -->
     <!-- Etiquetas junto a los cuadros de hora de inicio y fin -->
-    <string name="start_label">Inicio:</string>
-    <string name="end_label">Fin:</string>
+    <string name="start_label">Inici:</string>
+    <string name="end_label">Fi:</string>
     <string name="edit_intent">Editar</string>
-    <string name="time_seconds">segundos</string>
+    <string name="time_seconds">segons</string>
     <!-- Una vez guardada una notificacion o un tono de llamada y tienes mas opciones de configuracion-->
     <string name="what_to_do_with_ringtone">Guardado. ¿Quieres que sea el tono por defecto o para un contacto?</string>
     <string name="set_default_notification">Guardado. ¿Quieres que sea tu notificación por defecto?</string>
     <string name="make_default_ringtone_button">Por defecto</string>
     <string name="choose_contact_ringtone_button">Asignar a contacto</string>
     <string name="do_nothing_with_ringtone_button">Cerrar</string>
+
     <!-- Cuadro de progreso de carga, grabacion, o guardado... -->
     <string name="progress_dialog_loading">Cargando…</string>
     <string name="progress_dialog_recording">Recording…</string>

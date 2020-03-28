@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,7 +49,7 @@ import com.marc.multimedia.secuencias.audioUtils.FileSaveDialog;
 import com.marc.multimedia.secuencias.audioUtils.MarkerView;
 import com.marc.multimedia.secuencias.audioUtils.SamplePlayer;
 import com.marc.multimedia.secuencias.audioUtils.SongMetadataReader;
-import com.marc.multimedia.secuencias.audioUtils.WaveformView;
+import com.marc.multimedia.secuencias.audioViews.WaveformView;
 import com.marc.multimedia.secuencias.audioUtils.soundfile.SoundFile;
 
 import java.io.File;
@@ -844,7 +843,6 @@ public class EditarAudio extends Activity
             mPlayButton.setContentDescription(getResources().getText(R.string.stop));
         } else {
             mPlayButton.setImageResource(R.drawable.play);
-
             mPlayButton.setContentDescription(getResources().getText(R.string.play));
         }
     }
