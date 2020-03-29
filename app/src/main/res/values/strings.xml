@@ -91,7 +91,7 @@
     <string name="alert_ok_button">Aceptar</string>
     <string name="alert_yes_button">Sí, por favor.</string>
     <string name="alert_no_button">No, gracias.</string>
-    <string name="save_success_message">Guardado</string>
+    <string name="guardat">Guardat!</string>
     <string name="default_ringtone_success_message">Tono por defecto cambiado</string>
     <string name="play_error">Imposible reproducir este archivo multimedia</string>
     <string name="no_unique_filename">Imposible encontrar un nombre de archivo único</string>

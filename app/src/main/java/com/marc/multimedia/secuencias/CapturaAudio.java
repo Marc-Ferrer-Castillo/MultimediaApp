@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -42,8 +43,8 @@ public class CapturaAudio extends AppCompatActivity {
 
         demanarPermisos();
 
-        fitxer = getExternalCacheDir().getAbsolutePath();
-        fitxer += "/audiorecordtest.3gp";
+        fitxer = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        fitxer += "/Gravació.3gp";
 
         grabarpausa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +86,7 @@ public class CapturaAudio extends AppCompatActivity {
 
         // Guardado con exito
         Toast.makeText(this,
-                R.string.save_success_message + fitxer,
+                R.string.guardat,
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -100,11 +101,12 @@ public class CapturaAudio extends AppCompatActivity {
 
         try {
             recorder.prepare();
+            recorder.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
 
-        recorder.start();
+
     }
 
     private void demanarPermisos() {

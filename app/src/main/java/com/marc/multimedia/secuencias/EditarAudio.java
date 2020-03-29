@@ -1267,7 +1267,7 @@ public class EditarAudio extends Activity
 
         // Guardado con exito
         Toast.makeText(this,
-                R.string.save_success_message,
+                R.string.guardat,
                 Toast.LENGTH_SHORT).show();
 
     }
