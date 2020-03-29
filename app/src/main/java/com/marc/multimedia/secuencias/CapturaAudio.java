@@ -77,9 +77,16 @@ public class CapturaAudio extends AppCompatActivity {
     }
 
     private void aturar() {
-        recorder.stop();
-        recorder.release();
-        recorder = null;
+        if (recorder != null){
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
+
+        // Guardado con exito
+        Toast.makeText(this,
+                R.string.save_success_message + fitxer,
+                Toast.LENGTH_SHORT).show();
     }
 
     private void grabar() {
@@ -88,6 +95,8 @@ public class CapturaAudio extends AppCompatActivity {
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setOutputFile(fitxer);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setAudioEncodingBitRate(16);
+        recorder.setAudioSamplingRate(44100);
 
         try {
             recorder.prepare();
