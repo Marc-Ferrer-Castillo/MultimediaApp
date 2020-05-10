@@ -3,7 +3,7 @@
 Small App that works with multimedia. 
 Can trim Images, Video and Audio. Images can also be rotated and flipped horizontally/vertically
 
-School Activity [Centre d'Estudis Politècnics](http://www.cepnet.net/)
+School Project [Centre d'Estudis Politècnics](http://www.cepnet.net/)
 March 2020
 
 ## Authors
