@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     // Si es vol editar
                     if (edicio){
                         intent = new Intent (this, EditarVideo.class).setData(fitxers.get(0).getUri());
-
+                        intent.putExtra("RUTA", fitxers.get(0).getPath());
                     }
                     // Només visualitzat
                     else{
